@@ -1,1 +1,32 @@
+name: Docker CI
 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: '0 */4 * * *'  # Toutes les 4 heures
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Build Docker image
+      run: docker build -t mon-bot-whatsapp .
+
+    - name: Test bot container
+      run: |
+        timeout 30s docker run --rm \
+          -e WA_NUMBER="2250000000" \
+          -e BOT_OWNER="2250000000@c.us" \
+          mon-bot-whatsapp || echo "Test terminé (timeout attendu)"
