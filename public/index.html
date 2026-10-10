@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SupremusBot — WhatsApp Bot & Dashboard</title>
+  <meta name="description" content="SupremusBot - Bot WhatsApp officiel avec système de pairing code et simulateur de commandes">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f5f3ff',
+              100: '#ede9fe',
+              500: '#8b5cf6',
+              600: '#7c3aed',
+              700: '#6d28d9',
+              900: '#4c1d95',
+            },
+            whatsapp: {
+              green: '#25D366',
+              dark: '#128C7E',
+              bg: '#0b141a',
+              chatBg: '#0b141a',
+              bubbleIn: '#202c33',
+              bubbleOut: '#005c4b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #111827;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #374151;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #4b5563;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+
+  <!-- Navigation Header -->
+  <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/20 text-xl font-bold">
+          🤖
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg tracking-tight text-white">SupremusBot</h1>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-medium border border-purple-500/30">v1.0.0</span>
+          </div>
+          <p class="text-xs text-slate-400">SUPREMUS PROD • Baileys WhatsApp Engine</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="statusBadge" class="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span id="statusText">Initialisation...</span>
+        </div>
+        <button onclick="fetchStatus()" title="Actualiser l'état" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- Left Column: WhatsApp Pairing & Info (5 cols) -->
+    <div class="lg:col-span-5 flex flex-col gap-6">
+
+      <!-- Pairing Code Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+        <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🔗</span>
+            <h2 class="font-semibold text-white">Code de Pairage (Pairing Code)</h2>
+          </div>
+          <span class="text-xs text-purple-400 font-mono bg-purple-950/60 px-2.5 py-1 rounded-md border border-purple-800/40">WhatsApp Web</span>
+        </div>
+
+        <p class="text-xs text-slate-400 mb-4">
+          Connectez votre compte WhatsApp au bot sans scanner de code QR.
+        </p>
+
+        <!-- Display Box -->
+        <div class="bg-slate-950 border border-slate-800 rounded-xl p-4 flex items-center justify-between mb-4">
+          <div>
+            <div class="text-[11px] uppercase tracking-wider text-slate-500 font-medium mb-1">Code Actif</div>
+            <div id="pairingCodeDisplay" class="font-mono text-2xl font-bold tracking-widest text-emerald-400">
+              Chargement...
+            </div>
+          </div>
+          <button id="copyBtn" onclick="copyPairingCode()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            <span>Copier</span>
+          </button>
+        </div>
+
+        <!-- Instructions steps -->
+        <div class="space-y-2 text-xs text-slate-300 bg-slate-950/40 p-3.5 rounded-xl border border-slate-800/70">
+          <div class="font-medium text-slate-200 mb-1 flex items-center gap-1.5">
+            <span>📱</span> Comment associer dans WhatsApp :
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-4 h-4 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-400 mt-0.5">1</span>
+            <span>Ouvrez WhatsApp sur votre smartphone</span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-4 h-4 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-400 mt-0.5">2</span>
+            <span>Allez dans <b>Appareils connectés</b> &rarr; <b>Connecter un appareil</b></span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-4 h-4 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-400 mt-0.5">3</span>
+            <span>Appuyez sur <b>"Associer avec un numéro de téléphone"</b></span>
+          </div>
+          <div class="flex items-start gap-2">
+            <span class="w-4 h-4 rounded-full bg-slate-800 text-[10px] flex items-center justify-center font-bold text-slate-400 mt-0.5">4</span>
+            <span>Saisissez le code de jumelage à 8 caractères affiché ci-dessus</span>
+          </div>
+        </div>
+
+        <!-- Request new code input -->
+        <div class="mt-4 pt-4 border-t border-slate-800 flex flex-col gap-2">
+          <label class="text-xs text-slate-400">Numéro de téléphone WhatsApp (avec indicatif) :</label>
+          <div class="flex gap-2">
+            <input type="text" id="phoneInput" placeholder="Ex: 2250103731509" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-200 flex-1 focus:outline-none focus:border-purple-500 font-mono">
+            <button onclick="requestNewCode()" class="px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg text-xs font-medium transition shadow-md shadow-purple-600/30 whitespace-nowrap">
+              Générer Code
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bot System Overview -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+        <h2 class="font-semibold text-white mb-3 flex items-center gap-2">
+          <span>⚙️</span> Informations Système
+        </h2>
+        <div class="grid grid-cols-2 gap-3 text-xs">
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-slate-500 mb-0.5">Propriétaire</div>
+            <div id="botOwner" class="font-mono text-slate-200 truncate">John Supremus</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-slate-500 mb-0.5">Numéro Configuré</div>
+            <div id="botNumber" class="font-mono text-slate-200 truncate">2250103731509</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-slate-500 mb-0.5">Moteur WhatsApp</div>
+            <div class="text-slate-200 font-mono">@whiskeysockets/baileys</div>
+          </div>
+          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">
+            <div class="text-slate-500 mb-0.5">Port HTTP</div>
+            <div class="text-slate-200 font-mono">3000 (0.0.0.0)</div>
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-slate-800">
+          <div class="text-xs font-semibold text-slate-300 mb-2">Commandes intégrées :</div>
+          <div class="grid grid-cols-3 gap-1.5 text-[11px] font-mono">
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/help</span>
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/ping</span>
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/info</span>
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/time</span>
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/bonjour</span>
+            <span class="bg-slate-800/80 text-purple-300 px-2 py-1 rounded text-center">/calcul</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logs Card -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl flex-1 flex flex-col">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <span>📜</span> Journal d'Événements
+          </h2>
+          <button onclick="clearLogs()" class="text-[11px] text-slate-500 hover:text-slate-300">Effacer</button>
+        </div>
+        <div id="logsContainer" class="bg-slate-950 font-mono text-[11px] p-3 rounded-xl border border-slate-800/80 text-slate-400 flex-1 max-h-48 overflow-y-auto space-y-1">
+          <div>[INIT] Initialisation du tableau de bord SupremusBot...</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: Interactive WhatsApp Simulator (7 cols) -->
+    <div class="lg:col-span-7 flex flex-col bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden min-h-[600px]">
+
+      <!-- Chat Header (WhatsApp style) -->
+      <div class="bg-slate-800/90 border-b border-slate-700/60 px-5 py-3.5 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-emerald-500 to-teal-600 flex items-center justify-center text-lg shadow">
+              🤖
+            </div>
+            <span id="chatOnlineIndicator" class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+          </div>
+          <div>
+            <div class="font-semibold text-sm text-white flex items-center gap-2">
+              <span>SupremusBot (Makima Supremia)</span>
+              <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">En ligne</span>
+            </div>
+            <div class="text-[11px] text-slate-400">Simulateur WhatsApp interactif en direct</div>
+          </div>
+        </div>
+
+        <button onclick="resetChat()" class="text-xs text-slate-400 hover:text-slate-200 px-2.5 py-1 rounded bg-slate-700/50 hover:bg-slate-700 transition">
+          Réinitialiser le chat
+        </button>
+      </div>
+
+      <!-- Quick Commands Pills -->
+      <div class="bg-slate-950/60 border-b border-slate-800/80 px-4 py-2 flex items-center gap-2 overflow-x-auto text-xs">
+        <span class="text-slate-500 text-[11px] whitespace-nowrap">Tester :</span>
+        <button onclick="sendQuickCommand('/help')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60 font-mono">/help</button>
+        <button onclick="sendQuickCommand('/ping')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60 font-mono">/ping</button>
+        <button onclick="sendQuickCommand('/info')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60 font-mono">/info</button>
+        <button onclick="sendQuickCommand('/time')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60 font-mono">/time</button>
+        <button onclick="sendQuickCommand('/calcul 42 * 8')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60 font-mono">/calcul 42 * 8</button>
+        <button onclick="sendQuickCommand('Bonjour')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60">Bonjour</button>
+        <button onclick="sendQuickCommand('Comment ça va ?')" class="px-2.5 py-1 rounded-full bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 transition whitespace-nowrap border border-slate-700/60">Comment ça va ?</button>
+      </div>
+
+      <!-- Chat Messages Container -->
+      <div id="chatMessages" class="flex-1 bg-[#0b141a] p-4 sm:p-6 overflow-y-auto space-y-3 flex flex-col">
+        <!-- Date pill -->
+        <div class="self-center bg-slate-800/80 text-slate-400 text-[10px] px-3 py-1 rounded-full shadow-sm my-1">
+          Aujourd'hui
+        </div>
+
+        <!-- Bot Welcome Bubble -->
+        <div class="self-start max-w-[85%] sm:max-w-[75%] bg-[#202c33] text-slate-100 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-md border border-slate-800/60 text-sm">
+          <div class="text-[11px] font-semibold text-emerald-400 mb-1">🤖 SupremusBot</div>
+          <div class="whitespace-pre-wrap leading-relaxed">👋 Bonjour ! Je suis le bot WhatsApp SupremusBot. Tapez <span class="font-mono text-purple-300 bg-slate-800/60 px-1 py-0.5 rounded">/help</span> pour voir les commandes disponibles ou utilisez les boutons rapides ci-dessus.</div>
+          <div class="text-[10px] text-slate-400 text-right mt-1" id="botWelcomeTime">--:--</div>
+        </div>
+      </div>
+
+      <!-- Chat Input Bar -->
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="bg-slate-800/80 border-t border-slate-700/60 p-3 sm:p-4 flex items-center gap-2">
+        <input 
+          type="text" 
+          id="chatInput" 
+          placeholder="Écrivez un message ou une commande (/help, /ping...)" 
+          class="flex-1 bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:border-purple-500 transition shadow-inner"
+          autocomplete="off"
+        >
+        <button 
+          type="submit" 
+          id="sendBtn" 
+          class="bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl px-4 py-2.5 font-medium transition flex items-center justify-center shadow-lg shadow-emerald-600/20"
+        >
+          <svg class="w-5 h-5 transform rotate-90" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+          </svg>
+        </button>
+      </form>
+
+    </div>
+
+  </main>
+
+  <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
+    SupremusBot • Développé par SUPREMUS PROD • Baileys + Express Runtime
+  </footer>
+
+  <script>
+    document.getElementById('botWelcomeTime').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    let currentPairingCode = '';
+
+    function log(msg) {
+      const container = document.getElementById('logsContainer');
+      const div = document.createElement('div');
+      const time = new Date().toLocaleTimeString();
+      div.textContent = `[${time}] ${msg}`;
+      container.appendChild(div);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function clearLogs() {
+      document.getElementById('logsContainer').innerHTML = '';
+      log('Journal vidé.');
+    }
+
+    async function fetchStatus() {
+      try {
+        const res = await fetch('/api/status');
+        const data = await res.json();
+        
+        document.getElementById('botOwner').textContent = data.botOwner || 'Non défini';
+        document.getElementById('botNumber').textContent = data.waNumber || 'Non défini';
+        if (data.waNumber && !document.getElementById('phoneInput').value) {
+          document.getElementById('phoneInput').value = data.waNumber;
+        }
+
+        const badge = document.getElementById('statusBadge');
+        const statusText = document.getElementById('statusText');
+
+        if (data.connection === 'open') {
+          badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-medium';
+          statusText.textContent = 'WhatsApp Connecté';
+        } else if (data.pairingCode) {
+          badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300 text-xs font-medium';
+          statusText.textContent = 'Code de Pairage Prêt';
+        } else {
+          badge.className = 'flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-medium';
+          statusText.textContent = data.status || 'En attente';
+        }
+
+        if (data.pairingCode) {
+          currentPairingCode = data.pairingCode;
+          document.getElementById('pairingCodeDisplay').textContent = data.pairingCode;
+        } else if (data.connection === 'open') {
+          document.getElementById('pairingCodeDisplay').textContent = '✅ ASSOCIÉ';
+        } else {
+          document.getElementById('pairingCodeDisplay').textContent = 'En génération...';
+        }
+
+        if (data.recentLogs && data.recentLogs.length > 0) {
+          data.recentLogs.forEach(entry => log(entry));
+        }
+
+      } catch (err) {
+        log('Erreur récupération statut: ' + err.message);
+      }
+    }
+
+    function copyPairingCode() {
+      if (!currentPairingCode || currentPairingCode === 'En génération...') {
+        alert('Aucun code de pairage disponible à copier.');
+        return;
+      }
+      navigator.clipboard.writeText(currentPairingCode).then(() => {
+        const btn = document.getElementById('copyBtn');
+        const oldHtml = btn.innerHTML;
+        btn.innerHTML = '<span>✅ Copié !</span>';
+        setTimeout(() => { btn.innerHTML = oldHtml; }, 2000);
+      });
+    }
+
+    async function requestNewCode() {
+      const number = document.getElementById('phoneInput').value.trim();
+      if (!number) {
+        alert('Veuillez entrer un numéro de téléphone avec indicatif.');
+        return;
+      }
+      log(`Demande de nouveau code pour le numéro ${number}...`);
+      try {
+        const res = await fetch('/api/request-pairing', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number })
+        });
+        const data = await res.json();
+        if (data.code) {
+          currentPairingCode = data.code;
+          document.getElementById('pairingCodeDisplay').textContent = data.code;
+          log(`Nouveau code reçu : ${data.code}`);
+        } else if (data.message) {
+          log(data.message);
+        }
+      } catch (e) {
+        log('Erreur requête code : ' + e.message);
+      }
+      fetchStatus();
+    }
+
+    function sendQuickCommand(cmd) {
+      document.getElementById('chatInput').value = cmd;
+      document.getElementById('chatForm').dispatchEvent(new Event('submit'));
+    }
+
+    function addMessage(sender, text, isUser = false) {
+      const container = document.getElementById('chatMessages');
+      const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const msgDiv = document.createElement('div');
+      if (isUser) {
+        msgDiv.className = 'self-end max-w-[85%] sm:max-w-[75%] bg-[#005c4b] text-white rounded-2xl rounded-tr-sm px-4 py-2.5 shadow-md text-sm';
+        msgDiv.innerHTML = `
+          <div class="whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>
+          <div class="text-[10px] text-emerald-200/80 text-right mt-1 flex items-center justify-end gap-1">
+            <span>${time}</span>
+            <svg class="w-3.5 h-3.5 text-blue-300 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7m-14 4l4 4L19 7"/></svg>
+          </div>
+        `;
+      } else {
+        msgDiv.className = 'self-start max-w-[85%] sm:max-w-[75%] bg-[#202c33] text-slate-100 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-md border border-slate-800/60 text-sm';
+        msgDiv.innerHTML = `
+          <div class="text-[11px] font-semibold text-emerald-400 mb-1">🤖 ${sender}</div>
+          <div class="whitespace-pre-wrap leading-relaxed">${escapeHtml(text)}</div>
+          <div class="text-[10px] text-slate-400 text-right mt-1">${time}</div>
+        `;
+      }
+
+      container.appendChild(msgDiv);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function escapeHtml(string) {
+      return String(string)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    async function handleChatSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMessage('Vous', text, true);
+      input.value = '';
+
+      try {
+        const res = await fetch('/api/command', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+        if (data.reply) {
+          addMessage('SupremusBot', data.reply, false);
+        } else {
+          addMessage('SupremusBot', 'Aucune réponse.', false);
+        }
+      } catch (err) {
+        addMessage('SupremusBot', '❌ Erreur de communication avec le bot: ' + err.message, false);
+      }
+    }
+
+    function resetChat() {
+      const container = document.getElementById('chatMessages');
+      container.innerHTML = `
+        <div class="self-center bg-slate-800/80 text-slate-400 text-[10px] px-3 py-1 rounded-full shadow-sm my-1">
+          Aujourd'hui
+        </div>
+        <div class="self-start max-w-[85%] sm:max-w-[75%] bg-[#202c33] text-slate-100 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-md border border-slate-800/60 text-sm">
+          <div class="text-[11px] font-semibold text-emerald-400 mb-1">🤖 SupremusBot</div>
+          <div class="whitespace-pre-wrap leading-relaxed">Chat réinitialisé. Tapez <span class="font-mono text-purple-300 bg-slate-800/60 px-1 py-0.5 rounded">/help</span> pour tester.</div>
+          <div class="text-[10px] text-slate-400 text-right mt-1">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+      `;
+    }
+
+    // Initial fetch & interval
+    fetchStatus();
+    setInterval(fetchStatus, 5000);
+  </script>
+</body>
+</html>

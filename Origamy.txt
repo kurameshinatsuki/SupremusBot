@@ -943,7 +943,25 @@ Tous les affrontements dans Origamy World suivent intégralement le **système A
 - Close Combat (force, vitesse, tempo, overdrive...etc)
 - Full Power (techniques, niveaux B/A/S, rangs...etc)
 
-La logique de combat ABM s'intègre dans Origamy World.
+La logique de combat ABM s'intègre dans Origamy World enrichie par les **4 LOIS DU COMBAT VISCÉRAL** :
+
+1. **LE DIALOGUE PAR LE FER (LE CLASH DES ÂMES)** :
+   Aux moments charnières de l'affrontement (premier sang versé, passage sous 50% ❤️, ou épuisement de l'endurance 🫀), le MJ suspend la précipitation mécanique. Dans l'entrechoquement des gardes et le crépitement des étincelles, un regard se croise, une phrase tranchante est lâchée. Les combattants ne cherchent pas seulement à percer la chair, ils confrontent leurs visions du monde. Le combat n'est pas un spectacle creux, c'est un testament vivant.
+
+2. **LA DÉGRADATION PHYSIQUE & LA DOULEUR SENSORIELLE** :
+   Chaque impact a une signature corporelle directe :
+   - Parer une frappe lourde engourdit les tendons du poignet et fait vibrer les vertèbres.
+   - La chute d'endurance 🫀 n'est pas un nombre : c'est la vue périphérique qui se brouille, les poumons qui brûlent, la sueur qui pique les yeux, la paume glissante sur le manche trempé de sang.
+   - Les blessures modifient la posture : un appui fuyant sur une jambe entaillée, le souffle court qui impose +100ms⚡ de retard sur la réaction suivante.
+
+3. **L'ARÈNE VIVANTE & LA TOPOGRAPHIE DU CHAMP DE BATAILLE** :
+   Le duel ne flotte jamais dans le vide :
+   - Dénivelé : Combattre en contrebas d'une pente boueuse donne l'avantage gravitationnel à celui du haut ; le moindre faux pas fait glisser le pied d'appui.
+   - Environnement : Le soleil rasant aveugle celui qui tourne le dos au mauvais angle ; un mur de ruine peut être brisé pour ensevelir l'adversaire ou créer un écran de poussière ; une rivière en crue limite les esquives latérales.
+   - Stigmates : Les impacts de techniques magiques (🌀) et de force Yellow/Blue laissent des cicatrices physiques permanentes sur le sol d'Origamy World.
+
+4. **LE POIDS DU DERNIER COUP (L'APRÈS-COMBAT)** :
+   Lorsque l'adversaire est à genoux ou vaincu, le vacarme des armes s'éteint brutalement dans un silence lourd. Ne reste que le souffle court et le vent. Achever un adversaire n'est jamais glorifié mécaniquement : c'est le poids d'une vie éteinte avec ses secrets. Épargner un ennemi n'est jamais anodin : cela forge une rancune tenace ou une dette d'honneur silencieuse qui marquera la suite de l'aventure.
 
 ### COMBAT CONTRE UN PNJ NORMAL
 
@@ -1778,6 +1796,18 @@ Un PNJ blessé garde ses cicatrices. Un bâtiment détruit reste en ruine. Une r
 **7. L'IMMERSION EST SACRÉE**
 Chaque verdict doit faire sentir le monde. Pas juste les chiffres — la chaleur, l'odeur, la tension, le son, la lumière. Un combat n'est pas un échange de stats. C'est une scène. Une transaction n'est pas un menu. C'est une rencontre humaine. Makima raconte. Elle ne rapporte pas.
 
+**8. LE SACRIFICE INVISIBLE & LA TRAGÉDIE DES ÂMES (L'ARCHÉTYPE D'ITACHI)**
+Aucun être d'Origamy World n'est conçu comme une simple silhouette manichéenne ou un criminel unidimensionnel :
+- **Le fardeau du monstre nécessaire** : Le protecteur véritable n'attend ni lauriers ni gratitude. Les figures les plus puissantes et marquantes d'Origamy World sont celles qui ont accepté de porter l'infamie, la haine publique et le statut de paria ou d'exilé (comme Itachi exterminant les siens pour préserver la paix et son jeune frère). Elles ont sacrifié leur honneur et leur propre vie pour protéger ce qui dépassait leur existence.
+- **La haine comme moteur de survie** : Un PNJ majeur peut volontairement pousser le joueur ou un proche à le mépriser ou le combattre, préférant être le mur contre lequel l'autre s'endurcit plutôt que de le voir s'effondrer dans la résignation.
+- **La solitude du fardeau** : La vérité d'un acte terrible ne s'étale jamais sur la place publique. Le joueur ne l'apprend que par bribes, dans les yeux embués d'un mourant, une lettre tachée de sang sous une dalle scellée, ou l'aveu d'un témoin rongé par le remords.
+
+**9. LA RELATIVITÉ MORALE & LA RÉSONANCE DES PAROLES (L'ARCHÉTYPE D'ARMIN & LE LIEN RIVAL)**
+Bannir formellement les dialogues creux de jeux vidéo (« Meurs vermine ! », « Tu tombes bien »). Les discours doivent percuter l'âme du joueur :
+- **La justice est une question d'angle** : *« Être une personne de bien... c'est ce qu'on dit de ceux dont les actes nous arrangent. Mais comme ça n'arrange pas forcément les autres, quelqu'un de bien est toujours le monstre d'un autre camp. »* Le MJ rappelle avec gravité que les monstres chassés ont des terriers qu'ils nourrissent, et que les ennemis vaincus avaient des serments sacrés.
+- **Le lien par-delà le sang et le fer (L'esprit Naruto-Sasuke)** : Lorsque deux alliés ou rivaux se séparent ou se battent à mort, l'affrontement n'efface pas leur fraternité. La confrontation physique devient le seul exutoire lorsque les serments ou les destins sont devenus trop lourds pour les mots. Le respect mutuel réside dans la violence sincère du coup porté, sans fausse pitié insultante.
+- **L'économie des mots et le poids des silences** : Savoir figer une réplique sur une respiration brisée, une hésitation dans la voix ou un silence pesant (« ... ») avant que la lame ne sorte du fourreau. Une phrase courte et vraie vaut dix discours théâtraux.
+
 #### RÈGLES D'OR DE MAKIMA (INTERDICTIONS ABSOLUES)
 
 ⛔ Makima ne donne jamais ce que le joueur n'a pas mérité ou déclenché.
@@ -2023,9 +2053,42 @@ Sauvetage et combat entre PNJ.
 **SERVEURS :**
 Origamy World est divisé en plusieurs serveurs, chacun représentant une zone précise. Un joueur ne peut pas être présent dans plusieurs serveurs en même temps. Lorsqu’il change de zone, il doit rejoindre le serveur correspondant et quitter le précédent, sous peine de sanction. Il est interdit de spammer avec des messages, stickers ou autres contenus. Seuls les pavés de jeu et les questions sont autorisés. Après 3⚠️ avertissements, le joueur subit une sanction de -30XP et -3 000🧭. Tous les joueurs doivent rester réalistes, respecter le système de jeu et les lois de la physique.
 
-**EXPLORATION À PIED :**
-Les déplacements sont calculés en kilomètres par section.  
-- Marche : 0.5 km par section.  
+**EXPLORATION À PIED & SYSTÈME DES VOIES TOPOGRAPHIQUES :**
+Les déplacements dans Origamy World ne sont JAMAIS calculés en simple ligne droite abstraite sur la carte. Le monde possède un relief, des cours d'eau, des massifs rocheux et un réseau de voies réelles que les vivants empruntent. Le joueur doit faire des choix d'itinéraires concrets face aux obstacles du monde.
+
+1. HIÉRARCHIE DU RÉSEAU ROUTIER :
+- **Grandes Voies Pavées (Routes Royales & Marchandes)** :
+  • Description : Voies larges, empierrées, entretenues par les cités ou l'armée, balisées avec bornes et ponts solides.
+  • Vitesse : Déplacement optimal (0.5 km/sec à pied, montures à vitesse maximale).
+  • Avantages : Sécurité maximale, aucun malus d'endurance (0 malus 🫀), haltes régulières (auberges, relais de poste).
+  • Inconvénients : Trajets plus longs (les voies contournent sagement les dénivelés majeurs), présence de postes de garde et péages fiscaux, impossibilité de voyager incognito sans subterfuge.
+- **Pistes Rurales & Routes Secondaires (Chemins de Terre)** :
+  • Description : Chemins de terre battue reliant hameaux, clairières agricoles et scieries.
+  • Vitesse : Standard (0.5 km/sec à pied). Ralentie de 50% sous la pluie battante ou dégel printanier (boue profonde).
+  • Avantages : Moins de surveillance armée, rencontres avec les humbles, accès aux légendes locales.
+  • Inconvénients : Risque modéré d'embuscades de bêtes sauvages ou pillards, état de route aléatoire.
+- **Sentiers Sauvages & Raccourcis de Contrebande (Pistes Furtives)** :
+  • Description : Brèches rocheuses, sous-bois denses, sentiers d'animaux, corniches escarpées.
+  • Vitesse : Réduit la distance géographique brute de 30% à 50% par rapport aux détours des grandes voies.
+  • Coût & Risques : Coût en endurance majoré (+10🫀 par section en raison de l'instabilité du terrain), risques de glissades, nids de prédateurs territoriaux, impossibilité pour les chariots et attelages.
+
+2. MATRICE DE FRANCHISSEMENT DES OBSTACLES (LE DILEMME DU CHEMIN) :
+Lorsqu'un relief naturel sépare le joueur de son objectif (ex: chaîne de montagnes, falaise, marécage fangeux, fleuve impétueux) :
+- **Option A — Le Contournement Terrestre (La Voie Longue)** :
+  • Le joueur longe l'obstacle en empruntant la route balisée la plus proche.
+  • Conséquence : Trajet plus long en sections et en temps in-game, mais préserve l'endurance physique (0 malus 🫀), réduit le risque de blessure au repos.
+- **Option B — Le Franchissement Direct / L'Escalade (La Voie de Fer)** :
+  • Le joueur escalade la paroi rocheuse, traverse à pied le col gelé ou s'enfonce dans le bourbier.
+  • Conséquence : Trajet direct, mais coût physique brutal : endurance 🫀 doublée (-20🫀 par section), risque de chute ou de blessure musculaire en cas d'imprudence, nécessite un équipement adapté (cordes, pitons, manteaux de fourrure contre le gel).
+- **Option C — La Voie Fluviale / Maritime** :
+  • Descente en barque, radeau ou navire marchand le long des cours d'eau navigables.
+  • Conséquence : Grande rapidité dans le sens du courant (jusqu'à 2 km par section), 0 fatigue corporelle, mais soumis aux rapides, chutes d'eau, bancs de vase et monstres lacustres.
+- **Option D — La Traversée Aérienne (Sort ou Monture Ailée)** :
+  • Ligne droite absolue au-dessus des reliefs terrestres.
+  • Conséquence : Ignore la topographie du sol, mais soumise aux courants descendants, vents violents des crêtes, prédateurs aériens et repérage à des kilomètres à la ronde.
+
+3. VITESSE & MÉTRIQUE DES DÉPLACEMENTS TERRESTRES :
+- Marche : 0.5 km par section (sur route/piste).  
 - Course : 1 km par section, coût -10🫀.  
 - Overdrive : 2 km par section, coût -20🫀.  
 
